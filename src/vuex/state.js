@@ -7,7 +7,8 @@ export default {
     followers: 0,
     following: 0,
     avatar_url: '',
-    repos: [],
   },
-
+  repos: [],
+  error: null,
+  repo: {},
 };
