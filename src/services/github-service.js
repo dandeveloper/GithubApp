@@ -9,5 +9,5 @@ export function fetchUserRepos(username) {
 }
 
 export function fetchRepo(fullName) {
-  return axios.get(`https://api.github.com/repo/${fullName}`);
+  return axios.get(`https://api.github.com/repos/${fullName}`);
 }
