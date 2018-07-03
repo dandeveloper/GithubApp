@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import UserSearch from '@/components/user/UserSearch';
 import User from '@/components/user/User';
 import Repo from '@/components/repo/Repo';
+import NotFound from '@/components/globals/NotFound';
 
 Vue.use(Router);
 
@@ -23,6 +24,10 @@ export default new Router({
       path: '/repo/:reponame',
       name: 'Repo',
       component: Repo,
+    },
+    {
+      path: '*',
+      component: NotFound,
     },
   ],
 });
