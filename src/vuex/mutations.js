@@ -5,11 +5,10 @@ export default {
     }
   },
   FETCH_USER_REPOS(state, payload) {
-    if (state.user.login) {
-      payload.forEach((element) => {
-        state.repos.push(element);
-      });
-    }
+    const newRepos = payload.map(repo => ({
+      ...repo,
+    }));
+    state.repos = newRepos;
   },
   FETCH_REPO(state, payload) {
     state.repo = payload;
