@@ -9,6 +9,9 @@ export default {
     avatar_url: '',
   },
   repos: [],
-  error: null,
+  error: {
+    message: '',
+    code: '',
+  },
   repo: {},
 };

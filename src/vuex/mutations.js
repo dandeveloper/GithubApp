@@ -15,8 +15,50 @@ export default {
   },
   REQUEST_ERROR(state, payload) {
     if (payload !== null) {
-      state.error = payload;
-      console.log('Erro no servidor.', payload);
+      state.error.code = payload;
+      switch (state.error.code) {
+        case 404:
+          state.error.message = 'Usuário não encontrado.';
+          break;
+        case 403:
+          state.error.message = 'Limite de buscas excedidas, tente mais tarde.';
+          break;
+        default:
+          state.error.message = 'Erro interno no servidor.';
+          break;
+      }
     }
+  },
+  CLEAR_ERROR(state) {
+    state.error = {
+      code: '',
+      message: '',
+    };
+  },
+  REPOS_STARS_ASC(state) {
+    state.repos = state.repos.sort((a, b) => {
+      const starsA = a.stargazers_count;
+      const starsB = b.stargazers_count;
+      let comparison = 0;
+      if (starsA > starsB) {
+        comparison = 1;
+      } else if (starsA < starsB) {
+        comparison = -1;
+      }
+      return comparison;
+    });
+  },
+  REPOS_STARS_DESC(state) {
+    state.repos = state.repos.sort((a, b) => {
+      const starsA = a.stargazers_count;
+      const starsB = b.stargazers_count;
+      let comparison = 0;
+      if (starsA < starsB) {
+        comparison = 1;
+      } else if (starsA > starsB) {
+        comparison = -1;
+      }
+      return comparison;
+    });
   },
 };

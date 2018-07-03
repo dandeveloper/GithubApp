@@ -5,7 +5,7 @@ export default {
     return fetchUser(user).then((response) => {
       context.commit('FETCH_USER', response.data);
     }).catch((err) => {
-      context.commit('REQUEST_ERROR', err.status);
+      context.commit('REQUEST_ERROR', err.response.status);
     });
   },
   fetchUserRepos(context, currentUser) {
@@ -19,7 +19,10 @@ export default {
     return fetchRepo(fullName).then((response) => {
       context.commit('FETCH_REPO', response.data);
     }).catch((err) => {
-      context.commit('REQUEST_ERROR', err);
+      context.commit('REQUEST_ERROR', err.response.status);
     });
+  },
+  clearError(context) {
+    context.commit('CLEAR_ERROR');
   },
 };
