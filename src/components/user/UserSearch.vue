@@ -2,14 +2,12 @@
   <div>
     <Header />
     <div class="container">
-      <form onsubmit="return false" class="search__form">
+      <form @submit.prevent="submitSearch(search)" class="search__form">
         <div class="input-group mb-3">
-          <input type="search" class="search__input form-control"
-          @keyup.enter="redirectToUser($event.target.value)"
-          @input="debounceInput" placeholder="Faça sua busca aqui...">
+          <input type="search" v-model="search" class="search__input form-control"
+          placeholder="Faça sua busca aqui...">
           <div class="input-group-append">
-            <button @onClick="redirectToUser()"
-            class="search__button btn btn-primary">Buscar</button>
+            <button class="search__button btn btn-primary">Buscar</button>
           </div>
         </div>
       </form>
@@ -19,22 +17,18 @@
 </template>
 <script>
 
-import debounce from 'debounce';
 import ErrorModal from '@/components/globals/ErrorModal';
 
 export default {
   methods: {
 
-    debounceInput:
-      debounce(function _debounce(e) {
-        const value = e.target.value;
-        if (value) {
-          this.$store.dispatch('fetchUser', value);
-        }
-      },
-      1000),
+    data() {
+      return {
+        search: '',
+      };
+    },
 
-    redirectToUser(value) {
+    submitSearch(value) {
       if (value.length) {
         this.$store.dispatch('fetchUser', value).then(() => {
           if (!this.$store.state.error.code) {
