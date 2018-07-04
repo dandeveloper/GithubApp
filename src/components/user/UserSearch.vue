@@ -20,14 +20,12 @@
 import ErrorModal from '@/components/globals/ErrorModal';
 
 export default {
+  data() {
+    return {
+      search: '',
+    };
+  },
   methods: {
-
-    data() {
-      return {
-        search: '',
-      };
-    },
-
     submitSearch(value) {
       if (value.length) {
         this.$store.dispatch('fetchUser', value).then(() => {
