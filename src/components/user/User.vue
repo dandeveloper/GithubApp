@@ -2,12 +2,14 @@
   <section class="user">
     <Header />
     <userDetails />
-    <userRepos />
+    <userReposList />
+    <errorModal />
   </section>
 </template>
 <script>
 import UserDetails from '@/components/user/UserDetails';
 import UserReposList from '@/components/user/UserReposList';
+import ErrorModal from '@/components/globals/ErrorModal';
 
 export default {
   mounted() {
@@ -22,7 +24,8 @@ export default {
   },
   components: {
     userDetails: UserDetails,
-    userRepos: UserReposList,
+    userReposList: UserReposList,
+    errorModal: ErrorModal,
   },
 };
 </script>
