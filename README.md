@@ -1,3 +1,5 @@
+<img src="https://travis-ci.org/dandeveloper/GithubApp.svg?branch=master">
+
 # github-app
 
 > A simple Github API App using VueJS.
