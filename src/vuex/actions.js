@@ -25,4 +25,10 @@ export default {
   clearError(context) {
     context.commit('CLEAR_ERROR');
   },
+  reposStarsASC(context) {
+    context.commit('REPOS_STARS_ASC');
+  },
+  reposStarsDESC(context) {
+    context.commit('REPOS_STARS_DESC');
+  },
 };

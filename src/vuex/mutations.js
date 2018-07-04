@@ -47,6 +47,7 @@ export default {
       }
       return comparison;
     });
+    state.reposOrder = 'ASC';
   },
   REPOS_STARS_DESC(state) {
     state.repos = state.repos.sort((a, b) => {
@@ -60,5 +61,6 @@ export default {
       }
       return comparison;
     });
+    state.reposOrder = 'DESC';
   },
 };
