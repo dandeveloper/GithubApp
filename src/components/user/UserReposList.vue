@@ -1,9 +1,23 @@
 <template>
-  <div class="user__repos">
-    <ul class="user__repos-list">
-      <li v-for="repo in reposList" :key="repo.id">
-          <a href="#" class="repo__link" @onClick="goToRepo(repo.full_name, repo.name)" >
-            {{ repo.name }}
+  <div class="user__repos container">
+    <div class="user__repos-header row">
+      <strong class="col-md-6">Lista de Repositórios</strong>
+      <div class="col-md-6 text-right">
+        <strong>Ordernar Por:</strong>
+        <a href="#"
+          @click="orderBy($event)" class="order-by"><i class="fa"
+          :class="orderByClass"></i> {{orderText}} de Estrelas</a>
+      </div>
+    </div>
+    <ul class="user__repos-list list-group">
+      <li v-for="repo in reposList" :key="repo.id" class="list-group-item list-group-item-action">
+          <a href="#" class="repo__link"
+            @click.stop.prevent="redirectToRepo(repo.full_name, repo.name)">
+            <strong class="repo__name"> {{repo.name }}</strong>
+            <span class="repo__stars float-right">
+              <i class="fa fa-star"></i> Estrelas <span class="quantity">
+                {{repo.stargazers_count }}</span>
+            </span>
           </a>
       </li>
     </ul>
@@ -12,18 +26,62 @@
 <script>
 export default {
   computed: {
-    reposList: function reposList() {
+    reposList() {
       return this.$store.state.repos;
+    },
+    orderText() {
+      let message = '';
+      if (this.$store.state.reposOrder === 'ASC') {
+        message = 'Decrescente';
+      } else {
+        message = 'Crescente';
+      }
+      return message;
+    },
+    orderByClass() {
+      let className = '';
+      if (this.$store.state.reposOrder === 'ASC') {
+        className = 'fa-arrow-down';
+      } else {
+        className = 'fa-arrow-up';
+      }
+      return className;
     },
   },
   mounted() {
-    this.$store.dispatch('fetchUserRepos', this.$store.state.user.login);
+    this.$store.dispatch('fetchUserRepos', this.$store.state.user.login).then(() => {
+      this.$store.dispatch('reposStarsDESC');
+    });
   },
   methods: {
+    orderBy(e) {
+      e.preventDefault();
+      if (this.$store.state.reposOrder === 'ASC') {
+        this.$store.dispatch('reposStarsDESC');
+      } else {
+        this.$store.dispatch('reposStarsASC');
+      }
+    },
     redirectToRepo(fullName, name) {
-      this.dispatch('fetchRepo', fullName);
-      this.$router.push(`/repo/${name}`);
+      this.$store.dispatch('fetchRepo', fullName).then(() => {
+        this.$router.push(`/repo/${name}`);
+      });
     },
   },
 };
 </script>
+
+<style lang="postcss" scoped>
+.repo__stars {
+  background: #eaeaea;
+  border-radius: 3px;
+  padding: 3px 5px;
+  font-size: 14px;
+}
+.repo__link {
+  display: block;
+}
+.user__repos-header {
+  margin-bottom: 10px;
+}
+</style>
