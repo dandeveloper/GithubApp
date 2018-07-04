@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal ref="myModalRef" hide-footer>
+    <b-modal ref="errorModal" hide-footer>
       <div class="d-block text-center">
         <h3>{{message}}</h3>
       </div>
@@ -19,8 +19,8 @@ export default {
   created() {
     this.$store.watch(
       (state) => {
-        if (state.error.code > 200) {
-          this.$refs.myModalRef.show();
+        if (state.error.code > 200 || state.error.code === 'Error') {
+          this.$refs.errorModal.show();
         }
       },
     );
@@ -28,7 +28,7 @@ export default {
   methods: {
     hideModal() {
       this.$store.dispatch('clearError');
-      this.$refs.myModalRef.hide();
+      this.$refs.errorModal.hide();
     },
   },
 };
