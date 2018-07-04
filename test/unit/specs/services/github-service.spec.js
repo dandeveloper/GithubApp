@@ -1,4 +1,4 @@
-import { fetchUser, fetchUserRepos } from '@/services/github-service';
+import { fetchUser, fetchUserRepos, fetchRepo } from '@/services/github-service';
 
 describe('Request Valide User', () => {
   let user;
@@ -32,6 +32,29 @@ describe('Request Valide User Repos List', () => {
   it('status code must be 200', async () => {
     fetchUserRepos(user).then((response) => {
       expect(response.status).toBe(200);
+    });
+  });
+});
+
+describe('Request Valide Repo Data', () => {
+  let fullName;
+  beforeEach(() => {
+    fullName = 'dandeveloper/GithubApp';
+  });
+  it('status code must be 200', async () => {
+    fetchRepo(fullName).then((response) => {
+      expect(response.status).toBe(200);
+    });
+  });
+});
+describe('Request Invalid Repo Data', () => {
+  let fullName;
+  beforeEach(() => {
+    fullName = '';
+  });
+  it('status code must be 404', async () => {
+    fetchRepo(fullName).then((response) => {
+      expect(response.status).toBe(404);
     });
   });
 });
