@@ -14,11 +14,13 @@
         </div>
       </form>
     </div>
+    <errorModal />
   </div>
 </template>
 <script>
 
 import debounce from 'debounce';
+import ErrorModal from '@/components/globals/ErrorModal';
 
 export default {
   methods: {
@@ -35,10 +37,15 @@ export default {
     redirectToUser(value) {
       if (value.length) {
         this.$store.dispatch('fetchUser', value).then(() => {
-          this.$router.push(`/user/${this.$store.state.user.login}`);
+          if (!this.$store.state.error.code) {
+            this.$router.push(`/user/${this.$store.state.user.login}`);
+          }
         });
       }
     },
+  },
+  components: {
+    errorModal: ErrorModal,
   },
 };
 </script>
