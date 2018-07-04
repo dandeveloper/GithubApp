@@ -15,4 +15,5 @@ export default {
   },
   repo: {},
   reposOrder: 'DESC',
+  showRepoDetails: false,
 };

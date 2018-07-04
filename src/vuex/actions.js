@@ -31,4 +31,7 @@ export default {
   reposStarsDESC(context) {
     context.commit('REPOS_STARS_DESC');
   },
+  showRepoDetails(context, payload) {
+    context.commit('SHOW_REPO_DETAILS', payload);
+  },
 };

@@ -63,4 +63,7 @@ export default {
     });
     state.reposOrder = 'DESC';
   },
+  SHOW_REPO_DETAILS(state, payload) {
+    state.showRepoDetails = payload;
+  },
 };
