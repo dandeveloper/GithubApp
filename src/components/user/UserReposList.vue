@@ -12,7 +12,7 @@
     <ul class="user__repos-list list-group">
       <li v-for="repo in reposList" :key="repo.id" class="list-group-item list-group-item-action">
           <a href="#" class="repo__link"
-            @click.stop.prevent="redirectToRepo(repo.full_name, repo.name)">
+            @click.stop.prevent="showRepoDetails(repo.full_name)">
             <strong class="repo__name"> {{repo.name }}</strong>
             <span class="repo__stars float-right">
               <i class="fa fa-star"></i> Estrelas <span class="quantity">
@@ -62,9 +62,9 @@ export default {
         this.$store.dispatch('reposStarsASC');
       }
     },
-    redirectToRepo(fullName, name) {
+    showRepoDetails(fullName) {
       this.$store.dispatch('fetchRepo', fullName).then(() => {
-        this.$router.push(`/repo/${name}`);
+        this.$store.dispatch('showRepoDetails', true);
       });
     },
   },
@@ -72,6 +72,9 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+.user__repos {
+  margin-bottom: 60px;
+}
 .repo__stars {
   background: #eaeaea;
   border-radius: 3px;
