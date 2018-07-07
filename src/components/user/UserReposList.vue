@@ -56,11 +56,7 @@ export default {
   methods: {
     orderBy(e) {
       e.preventDefault();
-      if (this.$store.state.reposOrder === 'ASC') {
-        this.$store.dispatch('reposStarsDESC');
-      } else {
-        this.$store.dispatch('reposStarsASC');
-      }
+      this.$store.dispatch('reposOrder', this.$store.state.reposOrder);
     },
     showRepoDetails(fullName) {
       this.$store.dispatch('fetchRepo', fullName).then(() => {

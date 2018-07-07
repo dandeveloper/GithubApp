@@ -31,6 +31,13 @@ export default {
   reposStarsDESC(context) {
     context.commit('REPOS_STARS_DESC');
   },
+  reposOrder(context) {
+    if (context.state.reposOrder === 'ASC') {
+      context.commit('REPOS_STARS_DESC', context.state);
+    } else {
+      context.commit('REPOS_STARS_ASC', context.state);
+    }
+  },
   showRepoDetails(context, payload) {
     context.commit('SHOW_REPO_DETAILS', payload);
   },
