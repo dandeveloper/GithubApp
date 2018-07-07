@@ -6,7 +6,7 @@
         <strong>Ordernar Por:</strong>
         <a href="#"
           @click="orderBy($event)" class="order-by"><i class="fa"
-          :class="orderByClass"></i> {{orderText}} de Estrelas</a>
+          :class="classArrowDirection"></i> {{orderText}} de Estrelas</a>
       </div>
     </div>
     <ul class="user__repos-list list-group">
@@ -38,7 +38,7 @@ export default {
       }
       return message;
     },
-    orderByClass() {
+    classArrowDirection() {
       let className = '';
       if (this.$store.state.reposOrder === 'ASC') {
         className = 'fa-arrow-down';
