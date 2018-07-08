@@ -24,19 +24,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      user: this.$store.state.user,
-    };
-  },
-  mounted() {
-    this.getUserState();
-  },
-  methods: {
-    getUserState() {
-      if (this.$store.state.user.login.length) {
-        this.user = this.$store.state.user;
-      }
+  computed: {
+    user() {
+      return this.$store.state.user;
     },
   },
 };
