@@ -29,10 +29,13 @@ export default {
     submitSearch(value) {
       if (value.length) {
         this.$store.dispatch('fetchUser', value).then(() => {
-          if (!this.$store.state.error.code) {
-            this.$router.push(`/user/${this.$store.state.user.login}`);
-          }
+          this.redirectToUser();
         });
+      }
+    },
+    redirectToUser() {
+      if (!this.$store.state.error.code) {
+        this.$router.push({ name: 'User', params: { login: this.search } });
       }
     },
   },
