@@ -11,6 +11,7 @@ export default {
   fetchUserRepos(context, currentUser) {
     return fetchUserRepos(currentUser).then((response) => {
       context.commit('FETCH_USER_REPOS', response.data);
+      context.commit('REPOS_STARS_DESC', context.state);
     }).catch((err) => {
       context.commit('REQUEST_ERROR', err);
     });
@@ -25,16 +26,10 @@ export default {
   clearError(context) {
     context.commit('CLEAR_ERROR');
   },
-  reposStarsASC(context) {
-    context.commit('REPOS_STARS_ASC');
-  },
-  reposStarsDESC(context) {
-    context.commit('REPOS_STARS_DESC');
-  },
   reposOrder(context) {
     if (context.state.reposOrder === 'ASC') {
       context.commit('REPOS_STARS_DESC', context.state);
-    } else {
+    } else if (context.state.reposOrder === 'DESC') {
       context.commit('REPOS_STARS_ASC', context.state);
     }
   },
