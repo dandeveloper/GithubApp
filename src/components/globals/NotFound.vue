@@ -1,7 +1,10 @@
 <template>
-  <div class="text-center">
-    <h1 class="text-large">404</h1>
-    <strong>PÁGINA NÃO ENCONTRADA</strong>
+  <div>
+    <Header />
+    <div class="text-center">
+      <h1 class="text-large">404</h1>
+      <strong>PÁGINA NÃO ENCONTRADA</strong>
+    </div>
   </div>
 </template>
 <style scoped>
