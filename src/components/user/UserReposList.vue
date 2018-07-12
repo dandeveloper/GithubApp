@@ -48,11 +48,6 @@ export default {
       return className;
     },
   },
-  mounted() {
-    this.$store.dispatch('fetchUserRepos', this.$store.state.user.login).then(() => {
-      this.$store.dispatch('reposStarsDESC');
-    });
-  },
   methods: {
     orderBy(e) {
       e.preventDefault();
