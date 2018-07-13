@@ -1,7 +1,6 @@
 import Vuex from 'vuex';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import UserReposList from '@/components/user/UserReposList';
-import state from '@/vuex/state';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -12,57 +11,73 @@ describe('UserReposList', () => {
   let wrapper;
   beforeEach(() => {
     actions = {
-      fetchUser: jest.fn(),
-      fetchUserRepos: jest.fn(),
-      reposStarsDESC: jest.fn(),
+      reposOrder: jest.fn(() => Promise.resolve()),
+      fetchRepo: jest.fn(() => Promise.resolve()),
+      showRepoDetails: jest.fn(() => Promise.resolve()),
     };
     store = new Vuex.Store({
+      state: {
+        user: {
+          login: 'teste',
+        },
+        repos: [{
+          name: 'repo 1',
+          stargazers_count: 1,
+        },
+        {
+          name: 'repo 2',
+          stargazers_count: 2,
+        }],
+        reposOrder: 'DESC',
+      },
       actions,
-      state,
     });
     wrapper = shallowMount(UserReposList, {
-      mocks: {
-        $store: {
-          state: {
-            user: {
-              login: 'teste',
-            },
-            repos: [{
-              name: 'repo 1',
-              stargazers_count: 1,
-            },
-            {
-              name: 'repo 2',
-              stargazers_count: 2,
-            }],
-            reposOrder: 'DESC',
-          },
-        },
-      },
       store,
       localVue,
     });
   });
+
   it('expects reposList has length 2', () => {
-    function callback() {
-      expect(wrapper.vm.reposList).toHaveLength(2);
-    }
-    actions.fetchUserRepos(callback);
+    expect(wrapper.vm.reposList).toHaveLength(2);
   });
 
-  it('expects change order clicking on .order-by element', () => {
-    function callback() {
-      wrapper.find('.order-by').trigger('click');
-      expect(state.reposOrder).toEqual('ASC');
-    }
-    actions.fetchUserRepos(callback);
+  it('expects classArrowDirection return "fa-arrow-up"', () => {
+    wrapper.find('.order-by').trigger('click');
+    expect(wrapper.vm.classArrowDirection).toBe('fa-arrow-up');
   });
 
-  it('expects change showRepoDetails state on clicking on .repo__link element', () => {
-    function callback() {
-      wrapper.find('.repo__link')[0].trigger('click');
-      expect(state.showRepoDetails).toBeTruthy();
-    }
-    actions.fetchUserRepos(callback);
+  it('expects classArrowDirection return "fa-arrow-down"', () => {
+    store.state.reposOrder = 'ASC';
+    wrapper.find('.order-by').trigger('click');
+    expect(wrapper.vm.classArrowDirection).toBe('fa-arrow-down');
+  });
+
+  it('expects orderText return "Decrescente"', () => {
+    store.state.reposOrder = 'ASC';
+    wrapper.find('.order-by').trigger('click');
+    expect(wrapper.vm.orderText).toBe('Decrescente');
+  });
+
+  it('expects orderText return "Crescente"', () => {
+    wrapper.find('.order-by').trigger('click');
+    expect(wrapper.vm.orderText).toBe('Crescente');
+  });
+
+  it('expects reposOrder action to have been called after .order-by click', () => {
+    wrapper.find('.order-by').trigger('click');
+    expect(actions.reposOrder).toHaveBeenCalledTimes(1);
+  });
+
+  it('expects fetchRepo action to have been called after .repo__link click', () => {
+    wrapper.find('.repo__link').trigger('click');
+    expect(actions.fetchRepo).toHaveBeenCalledTimes(1);
+  });
+
+  it('expects showRepoDetails action to have been called after .repo__link click', () => {
+    wrapper.find('.repo__link').trigger('click');
+    actions.fetchRepo().then(() => {
+      expect(actions.showRepoDetails).toHaveBeenCalledTimes(1);
+    });
   });
 });
