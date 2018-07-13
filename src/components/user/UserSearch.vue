@@ -28,9 +28,7 @@ export default {
   methods: {
     submitSearch(value) {
       if (value.length) {
-        this.$store.dispatch('fetchUser', value).then(() => {
-          this.redirectToUser();
-        });
+        this.redirectToUser();
       }
     },
     redirectToUser() {
@@ -44,7 +42,3 @@ export default {
   },
 };
 </script>
-
-<style lang="postcss" scoped>
-
-</style>
