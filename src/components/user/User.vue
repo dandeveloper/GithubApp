@@ -15,12 +15,21 @@ import ErrorModal from '@/components/globals/ErrorModal';
 
 export default {
   mounted() {
-    this.checkInvalidUser();
+    this.populateUser();
   },
   methods: {
-    checkInvalidUser() {
-      if (!this.$store.state.user.login.length) {
-        this.$router.push('/');
+    populateUser() {
+      const loginParam = this.$route.params.login;
+      if (loginParam) {
+        this.$store.dispatch('fetchUser', loginParam).then(() => {
+          this.$store.dispatch('fetchUserRepos', loginParam);
+        }).then(() => {
+          if (this.$store.state.error.code === 404) {
+            this.$router.push('/404');
+          }
+        });
+      } else {
+        this.$router.push('/404');
       }
     },
   },
@@ -32,6 +41,3 @@ export default {
   },
 };
 </script>
-
-<style lang="postcss" scoped>
-</style>
