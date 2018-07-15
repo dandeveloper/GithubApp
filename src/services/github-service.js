@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const AUTHORIZATION = JSON.stringify(process.env.AUTHORIZATION);
+const AUTHORIZATION = `token ${JSON.stringify(process.env.AUTHORIZATION)}`;
 const headers = {
   Authorization: AUTHORIZATION,
   Accept: 'application/vnd.github.v3+json',
