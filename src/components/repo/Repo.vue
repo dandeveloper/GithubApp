@@ -13,9 +13,10 @@
     <div class="d-block repo__description-wrapper">
       <p class="repo__description">{{repo.description}}</p>
     </div>
-    <b-btn class="mt-3" variant="success" block @click="hideModal">Fechar</b-btn>
+    <b-btn class="btn-hide-modal mt-3" variant="success" block @click="hideModal">Fechar</b-btn>
   </b-modal>
 </template>
+
 <script>
 export default {
   data() {
@@ -37,9 +38,6 @@ export default {
     this.repo = this.$store.state.repo;
   },
   methods: {
-    showModal() {
-      this.$refs.repoModal.show();
-    },
     hideModal() {
       this.$store.dispatch('showRepoDetails', false);
       this.$refs.repoModal.hide();
@@ -47,6 +45,7 @@ export default {
   },
 };
 </script>
+
 <style lang="postcss" scoped>
 .stars {
   background: #eaeaea;
