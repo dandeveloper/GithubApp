@@ -15,6 +15,7 @@
     <errorModal />
   </div>
 </template>
+
 <script>
 
 import ErrorModal from '@/components/globals/ErrorModal';
@@ -32,9 +33,11 @@ export default {
       }
     },
     redirectToUser() {
-      if (!this.$store.state.error.code) {
-        this.$router.push({ name: 'User', params: { login: this.search } });
-      }
+      this.$store.dispatch('fetchUser', this.search).then(() => {
+        if (!this.$store.state.error.code) {
+          this.$router.push({ name: 'User', params: { login: this.search } });
+        }
+      });
     },
   },
   components: {
