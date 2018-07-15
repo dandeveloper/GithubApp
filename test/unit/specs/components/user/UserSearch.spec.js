@@ -2,63 +2,72 @@ import Vuex from 'vuex';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import UserSearch from '@/components/user/UserSearch';
 import state from '@/vuex/state';
+import VueRouter from 'vue-router';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueRouter);
 
 describe('UserSearch', () => {
   let store;
   let actions;
-  let wrapper;
+  let router;
 
   beforeEach(() => {
     actions = {
-      fetchUser: jest.fn(),
+      fetchUser: jest.fn(() => Promise.resolve()),
     };
     store = new Vuex.Store({
       actions,
       state,
     });
-    wrapper = shallowMount(UserSearch, {
-      mocks: {
-        $store: {
-          state: {
-            error: {
-              code: '',
-            },
-          },
+    router = new VueRouter({
+      routes: [
+        {
+          name: 'User',
+          path: '/user/',
         },
-      },
-      store,
-      localVue,
+      ],
     });
   });
+  it('expects to submitSearch and redirectToUser to have been called on form submit', () => {
+    const wrapper = shallowMount(UserSearch, {
+      store,
+      router,
+      localVue,
+    });
 
-  it('expects to pass input value to search data', () => {
+    const submitSearch = jest.spyOn(wrapper.vm, 'submitSearch');
+    const redirectToUser = jest.spyOn(wrapper.vm, 'redirectToUser');
+
     wrapper.find('.search__input').setValue('teste');
-    expect(wrapper.vm.search).toBe('teste');
+    wrapper.find('.search__form').trigger('submit');
+
+    expect(submitSearch).toHaveBeenCalled();
+    expect(redirectToUser).toHaveBeenCalled();
   });
 
-  it('expects submitSearch to have been called', () => {
-    wrapper.vm.submitSearch = jest.fn();
-
-    wrapper.find('.search__input').setValue('teste');
-    wrapper.find('.search__button').trigger('click');
-    function callback() {
-      expect(wrapper.vm.submitSearch).toHaveBeenCalledTimes(1);
-    }
-    actions.fetchUser(callback);
+  it('expects to redirectToUser to have been called inside submitSearch', () => {
+    const wrapper = shallowMount(UserSearch, {
+      store,
+      router,
+      localVue,
+    });
+    const spy = jest.spyOn(wrapper.vm, 'redirectToUser');
+    const value = 'teste';
+    wrapper.vm.submitSearch(value);
+    expect(spy).toHaveBeenCalled();
   });
 
-  it('expects submitSearch to have been called', () => {
-    wrapper.vm.submitSearch = jest.fn();
-
-    wrapper.find('.search__input').setValue('teste');
-    wrapper.find('.search__button').trigger('click');
-
-    function callback() {
-      expect(wrapper.vm.submitSearch).toHaveBeenCalledTimes(1);
-    }
-    actions.fetchUser(callback);
+  it('expects to redirectToUser not to have been called inside of submitSearch', () => {
+    const wrapper = shallowMount(UserSearch, {
+      store,
+      router,
+      localVue,
+    });
+    const spy = jest.spyOn(wrapper.vm, 'redirectToUser');
+    const value = '';
+    wrapper.vm.submitSearch(value);
+    expect(spy).not.toHaveBeenCalled();
   });
 });
