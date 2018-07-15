@@ -13,7 +13,7 @@ export default {
       context.commit('FETCH_USER_REPOS', response.data);
       context.commit('REPOS_STARS_DESC', context.state);
     }).catch((err) => {
-      context.commit('REQUEST_ERROR', err);
+      context.commit('REQUEST_ERROR', err.response.status);
     });
   },
   fetchRepo(context, fullName) {
